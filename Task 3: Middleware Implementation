@@ -1,0 +1,33 @@
+// middleware/index.js
+
+// Logger middleware
+const logger = (req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+};
+
+// Authentication middleware
+const authenticate = (req, res, next) => {
+  const apiKey = req.headers['x-api-key'];
+  if (!apiKey || apiKey !== process.env.API_KEY) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+  next();
+};
+
+// Validation middleware
+const validateProduct = (req, res, next) => {
+  const { name, price } = req.body;
+  
+  if (!name || typeof name !== 'string') {
+    return res.status(400).json({ message: 'Invalid or missing product name' });
+  }
+  
+  if (price && (typeof price !== 'number' || price < 0)) {
+    return res.status(400).json({ message: 'Price must be a positive number' });
+  }
+  
+  next();
+};
+
+module.exports = { logger, authenticate, validateProduct };
