@@ -1,0 +1,10 @@
+project/
+├── .env
+├── .env.example
+├── package.json
+├── server.js
+├── routes/
+│   └── products.js
+├── middleware/
+│   └── index.js
+└── errors.js
